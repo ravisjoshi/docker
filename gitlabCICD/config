@@ -1,0 +1,20 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRBDxxxxxxxxxxxxxxURS0tLS0tCg==
+    server: https://akskube-ravi-5a66123-18f0e791.hcp.eastus2.azmk8s.io:443
+  name: akskube
+contexts:
+- context:
+    cluster: akskube
+    user: clusterUser_RAVI_akskube
+  name: akskube
+current-context: akskube
+kind: Config
+preferences: {}
+users:
+- name: clusterUser_RAVI_akskube
+  user:
+    client-certificate-data: LS0UGNZpbxxxxxxxxxxxx0tLS0tCg==
+    client-key-data: LS0tLS1CRUdJTxxxxxxxxxxxxxxxEUgS0VZLS0tLS0K
+    token: 01YjhmxxxxxxxxxxxxxxY0UjGLq

@@ -1,0 +1,33 @@
+FROM node:8.11.3-stretch
+
+# Add backports
+RUN echo "deb http://http.debian.net/debian jessie-backports main" >> /etc/apt/sources.list
+
+# Upgrade and Install packages
+RUN apt-get update && apt-get -y upgrade && apt-get install -y git openssh-server && apt-get install -y openjdk-8-jdk
+
+# Prepare container for ssh
+RUN mkdir /var/run/sshd && adduser --quiet jenkins && echo "jenkins:jenkins" | chpasswd
+
+RUN curl https://install.meteor.com/ | sh
+
+COPY docker /usr/bin/docker
+COPY helm /usr/bin/helm
+COPY --chown=jenkins:jenkins kube-config /home/jenkins/.kube/config
+
+ENV CI=true
+#EXPOSE 22
+
+#CMD ["/usr/sbin/sshd", "-D"]
+
+RUN groupadd -g 993 docker && usermod -a -G docker jenkins
+
+COPY jenkins-slave /usr/bin/jenkins-slave
+RUN chmod 775 /usr/bin/jenkins-slave
+
+COPY slave.jar /usr/share/jenkins/slave.jar
+
+RUN apt-get install -y --no-install-recommends bsdtar
+RUN export tar='bsdtar'
+
+ENTRYPOINT ["/usr/bin/jenkins-slave"]

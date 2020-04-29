@@ -1,0 +1,12 @@
+FROM centos:7
+RUN yum update -y && yum install -y epel-release \
+    && yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm \
+    && yum-config-manager --enable remi-php73 \
+    && yum install -y nginx \
+    && yum install -y yum-utils \
+    && yum update -y \
+    && yum install -y php php-common php-fpm php-gd php-json php-mbstring php-mysqlnd \
+    php-xml php-xmlrpc php-opcache php-mcrypt php-cli php-curl php-mysqlnd php-mongodb \
+    php-devel python-setuptools composer openssl-devel
+
+EXPOSE 443 80
